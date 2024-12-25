@@ -1,0 +1,14 @@
+{
+  "name": "ts-exc-fso",
+  "version": "1.0.0",
+  "description": "Exercising TypeScript programming",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "TypeScript"
+  ],
+  "author": "Rickyslash",
+  "license": "ISC"
+}
