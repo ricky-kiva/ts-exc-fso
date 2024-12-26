@@ -8,7 +8,29 @@ interface ExerciseResult {
   average: number
 };
 
-const calculateExercises = (dailyExerciseHours: number[], targetExerciseHour: number): ExerciseResult => {
+interface ExerciseCalculatorArgs {
+  target: number,
+  dailyExerciseHours: number[]
+}
+
+const getExerciseCalculatorArgs = (args: string[]): ExerciseCalculatorArgs => {
+  if (args.length < 4) throw new Error('not enough arguments');
+
+  args.forEach((arg, i) => {
+    if (i < 2) return;
+    if (isNaN(Number(arg))) throw new Error('provided values were not numbers');
+  });
+
+  const dailyExerciseHours = args.slice(3)
+    .map((arg) => Number(arg));
+
+  return {
+    target: Number(args[2]),
+    dailyExerciseHours
+  }
+}
+
+const calculateExercises = (targetExerciseHour: number, dailyExerciseHours: number[]): ExerciseResult => {
   dailyExerciseHours.forEach((hour) => {
     if (hour < 0) throw new Error('exercise hour cannot be negative');
     if (hour > 24) throw new Error('maximum hours in a day is 24');
@@ -31,13 +53,13 @@ const calculateExercises = (dailyExerciseHours: number[], targetExerciseHour: nu
 
   if (dailyPerTargetPercentage >= 100) {
     rating = 3;
-    ratingDescription = 'you good brother? where is the dedication?';
+    ratingDescription = 'feels good brother? keep it up you do good';
   } else if (dailyPerTargetPercentage >= 66) {
     rating = 2;
     ratingDescription = 'not too bad but could be better';
   } else if (dailyPerTargetPercentage >= 0) {
     rating = 1;
-    ratingDescription = 'feels good brother? keep it up you do good';
+    ratingDescription = 'you good brother? where is the dedication?';
   } else {
     throw new Error('unable to set rating for this exercise hours dataset');
   };
@@ -54,7 +76,10 @@ const calculateExercises = (dailyExerciseHours: number[], targetExerciseHour: nu
 }
 
 try {
-  console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2));
+  const { target, dailyExerciseHours } = getExerciseCalculatorArgs(process.argv);
+  const exerciseResult = calculateExercises(target, dailyExerciseHours);
+
+  console.log(exerciseResult);
 } catch (error: unknown) {
   let errorMessage = 'Something went wrong'
   
