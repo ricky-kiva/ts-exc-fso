@@ -44,19 +44,18 @@ const getBmiCalculatorArgs = (args: string[]): BmiCalculatorArgs => {
   }
 }
 
-try {
-  const { height, weight } = getBmiCalculatorArgs(process.argv);
-  const bmi = calculateBmi(height, weight);
-  
-  console.log(bmi);
-} catch (error: unknown) {
-  let errorMessage = 'Something went wrong'
-  
-  if (error instanceof Error) {
-    errorMessage = `${errorMessage}: ${error.message}`;
+if (require.main === module) {
+  try {
+    const { height, weight } = getBmiCalculatorArgs(process.argv);
+    const bmi = calculateBmi(height, weight);
+    console.log(bmi);
+  } catch (error: unknown) {
+    let errorMessage = 'Something went wrong';
+    if (error instanceof Error) {
+      errorMessage = `${errorMessage}: ${error.message}`;
+    }
+    console.log(errorMessage);
   }
-  
-  console.log(errorMessage);
 }
 
 export default calculateBmi;
