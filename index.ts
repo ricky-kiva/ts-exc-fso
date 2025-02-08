@@ -20,7 +20,7 @@ app.get('/bmi', (req, res) => {
 
     const bmi = calculateBmi(height, weight);
 
-    res.send({ weight, height, bmi })
+    res.send({ weight, height, bmi });
   } catch (e: unknown) {
     res.status(400).send('Sorry, there\'s an error calculating the BMI!');
     if (e instanceof Error) console.log(e);

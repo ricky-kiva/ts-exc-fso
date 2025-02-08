@@ -13,23 +13,6 @@ interface ExerciseCalculatorArgs {
   dailyExerciseHours: number[]
 }
 
-const getExerciseCalculatorArgs = (args: string[]): ExerciseCalculatorArgs => {
-  if (args.length < 4) throw new Error('not enough arguments');
-
-  args.forEach((arg, i) => {
-    if (i < 2) return;
-    if (isNaN(Number(arg))) throw new Error('provided values were not numbers');
-  });
-
-  const dailyExerciseHours = args.slice(3)
-    .map((arg) => Number(arg));
-
-  return {
-    target: Number(args[2]),
-    dailyExerciseHours
-  }
-}
-
 const calculateExercises = (targetExerciseHour: number, dailyExerciseHours: number[]): ExerciseResult => {
   dailyExerciseHours.forEach((hour) => {
     if (hour < 0) throw new Error('exercise hour cannot be negative');
@@ -72,8 +55,25 @@ const calculateExercises = (targetExerciseHour: number, dailyExerciseHours: numb
     ratingDescription,
     target: targetExerciseHour,
     average
-  }
-}
+  };
+};
+
+const getExerciseCalculatorArgs = (args: string[]): ExerciseCalculatorArgs => {
+  if (args.length < 4) throw new Error('not enough arguments');
+
+  args.forEach((arg, i) => {
+    if (i < 2) return;
+    if (isNaN(Number(arg))) throw new Error('provided values were not numbers');
+  });
+
+  const dailyExerciseHours = args.slice(3)
+    .map((arg) => Number(arg));
+
+  return {
+    target: Number(args[2]),
+    dailyExerciseHours
+  };
+};
 
 try {
   const { target, dailyExerciseHours } = getExerciseCalculatorArgs(process.argv);
@@ -81,7 +81,7 @@ try {
 
   console.log(exerciseResult);
 } catch (error: unknown) {
-  let errorMessage = 'Something went wrong'
+  let errorMessage = 'Something went wrong';
   
   if (error instanceof Error) {
     errorMessage = `${errorMessage}: ${error.message}`;

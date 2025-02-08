@@ -4,7 +4,7 @@ interface BmiCalculatorArgs {
 }
 
 const calculateBmi = (height: number, weight: number): string => {
-  const heightInMeter = (height / 100)
+  const heightInMeter = (height / 100);
   const bmi = weight / (heightInMeter * heightInMeter);
 
   switch(true) {
@@ -27,7 +27,7 @@ const calculateBmi = (height: number, weight: number): string => {
     default:
       throw new Error('an error occured while calculating the BMI');
   }
-}
+};
 
 const getBmiCalculatorArgs = (args: string[]): BmiCalculatorArgs => {
   if (args.length < 4) throw new Error('not enough arguments');
@@ -41,8 +41,8 @@ const getBmiCalculatorArgs = (args: string[]): BmiCalculatorArgs => {
   return {
     height: Number(args[2]),
     weight: Number(args[3])
-  }
-}
+  };
+};
 
 if (require.main === module) {
   try {
