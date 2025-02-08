@@ -8,12 +8,12 @@ interface ExerciseResult {
   average: number
 };
 
-interface ExerciseCalculatorArgs {
+export interface ExerciseParams {
   target: number,
   dailyExerciseHours: number[]
 }
 
-const calculateExercises = (targetExerciseHour: number, dailyExerciseHours: number[]): ExerciseResult => {
+export const calculateExercises = (targetExerciseHour: number, dailyExerciseHours: number[]): ExerciseResult => {
   dailyExerciseHours.forEach((hour) => {
     if (hour < 0) throw new Error('exercise hour cannot be negative');
     if (hour > 24) throw new Error('maximum hours in a day is 24');
@@ -58,7 +58,7 @@ const calculateExercises = (targetExerciseHour: number, dailyExerciseHours: numb
   };
 };
 
-const getExerciseCalculatorArgs = (args: string[]): ExerciseCalculatorArgs => {
+const getExerciseParamsFromArgs = (args: string[]): ExerciseParams => {
   if (args.length < 4) throw new Error('not enough arguments');
 
   args.forEach((arg, i) => {
@@ -75,17 +75,19 @@ const getExerciseCalculatorArgs = (args: string[]): ExerciseCalculatorArgs => {
   };
 };
 
-try {
-  const { target, dailyExerciseHours } = getExerciseCalculatorArgs(process.argv);
-  const exerciseResult = calculateExercises(target, dailyExerciseHours);
+if (require.main === module) {
+  try {
+    const { target, dailyExerciseHours } = getExerciseParamsFromArgs(process.argv);
+    const exerciseResult = calculateExercises(target, dailyExerciseHours);
 
-  console.log(exerciseResult);
-} catch (error: unknown) {
-  let errorMessage = 'Something went wrong';
-  
-  if (error instanceof Error) {
-    errorMessage = `${errorMessage}: ${error.message}`;
+    console.log(exerciseResult);
+  } catch (error: unknown) {
+    let errorMessage = 'Something went wrong';
+    
+    if (error instanceof Error) {
+      errorMessage = `${errorMessage}: ${error.message}`;
+    }
+    
+    console.log(errorMessage);
   }
-  
-  console.log(errorMessage);
 }
